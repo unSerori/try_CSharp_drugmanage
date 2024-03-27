@@ -29,38 +29,38 @@
         private void InitializeComponent()
         {
             gbxSearch = new GroupBox();
-            txtMoneyBelow = new TextBox();
-            txtMoneyAbove = new TextBox();
+            nudStockNum = new NumericUpDown();
+            cmbCategory = new ComboBox();
+            txtPriceBelow = new TextBox();
+            lblStockBelow = new Label();
+            txtPriceAbove = new TextBox();
             txtName = new TextBox();
             btnClear = new Button();
             btnSearch = new Button();
-            lblTo = new Label();
-            lblMoney = new Label();
-            lblStockBelow = new Label();
+            lblPriceTo = new Label();
+            lblPrice = new Label();
             lblStock = new Label();
             lblCategory = new Label();
             lblName = new Label();
             grddDrugs = new DataGridView();
             lblHits = new Label();
-            cmbCategory = new ComboBox();
-            nudStockNum = new NumericUpDown();
             gbxSearch.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)grddDrugs).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudStockNum).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)grddDrugs).BeginInit();
             SuspendLayout();
             // 
             // gbxSearch
             // 
             gbxSearch.Controls.Add(nudStockNum);
             gbxSearch.Controls.Add(cmbCategory);
-            gbxSearch.Controls.Add(txtMoneyBelow);
+            gbxSearch.Controls.Add(txtPriceBelow);
             gbxSearch.Controls.Add(lblStockBelow);
-            gbxSearch.Controls.Add(txtMoneyAbove);
+            gbxSearch.Controls.Add(txtPriceAbove);
             gbxSearch.Controls.Add(txtName);
             gbxSearch.Controls.Add(btnClear);
             gbxSearch.Controls.Add(btnSearch);
-            gbxSearch.Controls.Add(lblTo);
-            gbxSearch.Controls.Add(lblMoney);
+            gbxSearch.Controls.Add(lblPriceTo);
+            gbxSearch.Controls.Add(lblPrice);
             gbxSearch.Controls.Add(lblStock);
             gbxSearch.Controls.Add(lblCategory);
             gbxSearch.Controls.Add(lblName);
@@ -71,19 +71,43 @@
             gbxSearch.TabStop = false;
             gbxSearch.Text = "検索条件";
             // 
-            // txtMoneyBelow
+            // nudStockNum
             // 
-            txtMoneyBelow.Location = new Point(401, 35);
-            txtMoneyBelow.Name = "txtMoneyBelow";
-            txtMoneyBelow.Size = new Size(100, 23);
-            txtMoneyBelow.TabIndex = 11;
+            nudStockNum.Location = new Point(96, 93);
+            nudStockNum.Name = "nudStockNum";
+            nudStockNum.Size = new Size(63, 23);
+            nudStockNum.TabIndex = 13;
             // 
-            // txtMoneyAbove
+            // cmbCategory
             // 
-            txtMoneyAbove.Location = new Point(274, 35);
-            txtMoneyAbove.Name = "txtMoneyAbove";
-            txtMoneyAbove.Size = new Size(100, 23);
-            txtMoneyAbove.TabIndex = 10;
+            cmbCategory.FormattingEnabled = true;
+            cmbCategory.Location = new Point(96, 64);
+            cmbCategory.Name = "cmbCategory";
+            cmbCategory.Size = new Size(100, 23);
+            cmbCategory.TabIndex = 12;
+            // 
+            // txtPriceBelow
+            // 
+            txtPriceBelow.Location = new Point(401, 35);
+            txtPriceBelow.Name = "txtPriceBelow";
+            txtPriceBelow.Size = new Size(100, 23);
+            txtPriceBelow.TabIndex = 11;
+            // 
+            // lblStockBelow
+            // 
+            lblStockBelow.AutoSize = true;
+            lblStockBelow.Location = new Point(165, 96);
+            lblStockBelow.Name = "lblStockBelow";
+            lblStockBelow.Size = new Size(31, 15);
+            lblStockBelow.TabIndex = 3;
+            lblStockBelow.Text = "以下";
+            // 
+            // txtPriceAbove
+            // 
+            txtPriceAbove.Location = new Point(274, 35);
+            txtPriceAbove.Name = "txtPriceAbove";
+            txtPriceAbove.Size = new Size(100, 23);
+            txtPriceAbove.TabIndex = 10;
             // 
             // txtName
             // 
@@ -110,32 +134,23 @@
             btnSearch.Text = "検索";
             btnSearch.UseVisualStyleBackColor = true;
             // 
-            // lblTo
+            // lblPriceTo
             // 
-            lblTo.AutoSize = true;
-            lblTo.Location = new Point(380, 38);
-            lblTo.Name = "lblTo";
-            lblTo.Size = new Size(15, 15);
-            lblTo.TabIndex = 5;
-            lblTo.Text = "~";
+            lblPriceTo.AutoSize = true;
+            lblPriceTo.Location = new Point(380, 38);
+            lblPriceTo.Name = "lblPriceTo";
+            lblPriceTo.Size = new Size(15, 15);
+            lblPriceTo.TabIndex = 5;
+            lblPriceTo.Text = "~";
             // 
-            // lblMoney
+            // lblPrice
             // 
-            lblMoney.AutoSize = true;
-            lblMoney.Location = new Point(228, 38);
-            lblMoney.Name = "lblMoney";
-            lblMoney.Size = new Size(40, 15);
-            lblMoney.TabIndex = 4;
-            lblMoney.Text = "金額 : ";
-            // 
-            // lblStockBelow
-            // 
-            lblStockBelow.AutoSize = true;
-            lblStockBelow.Location = new Point(165, 96);
-            lblStockBelow.Name = "lblStockBelow";
-            lblStockBelow.Size = new Size(31, 15);
-            lblStockBelow.TabIndex = 3;
-            lblStockBelow.Text = "以下";
+            lblPrice.AutoSize = true;
+            lblPrice.Location = new Point(228, 38);
+            lblPrice.Name = "lblPrice";
+            lblPrice.Size = new Size(40, 15);
+            lblPrice.TabIndex = 4;
+            lblPrice.Text = "金額 : ";
             // 
             // lblStock
             // 
@@ -181,21 +196,6 @@
             lblHits.TabIndex = 2;
             lblHits.Text = "0件";
             // 
-            // cmbCategory
-            // 
-            cmbCategory.FormattingEnabled = true;
-            cmbCategory.Location = new Point(96, 64);
-            cmbCategory.Name = "cmbCategory";
-            cmbCategory.Size = new Size(100, 23);
-            cmbCategory.TabIndex = 12;
-            // 
-            // nudStockNum
-            // 
-            nudStockNum.Location = new Point(96, 93);
-            nudStockNum.Name = "nudStockNum";
-            nudStockNum.Size = new Size(63, 23);
-            nudStockNum.TabIndex = 13;
-            // 
             // ListForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -208,8 +208,8 @@
             Text = "一覧画面";
             gbxSearch.ResumeLayout(false);
             gbxSearch.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)grddDrugs).EndInit();
             ((System.ComponentModel.ISupportInitialize)nudStockNum).EndInit();
+            ((System.ComponentModel.ISupportInitialize)grddDrugs).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -218,13 +218,13 @@
 
         private GroupBox gbxSearch;
         private Label lblName;
-        private Label lblTo;
-        private Label lblMoney;
+        private Label lblPriceTo;
+        private Label lblPrice;
         private Label lblStockBelow;
         private Label lblStock;
         private Label lblCategory;
-        private TextBox txtMoneyBelow;
-        private TextBox txtMoneyAbove;
+        private TextBox txtPriceBelow;
+        private TextBox txtPriceAbove;
         private TextBox txtName;
         private Button btnClear;
         private Button btnSearch;

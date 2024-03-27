@@ -44,6 +44,7 @@
             btnSelectionFile.TabIndex = 0;
             btnSelectionFile.Text = "ファイル選択";
             btnSelectionFile.UseVisualStyleBackColor = true;
+            btnSelectionFile.Click += btnSelectionFile_Click;
             // 
             // btnImport
             // 
@@ -53,6 +54,7 @@
             btnImport.TabIndex = 1;
             btnImport.Text = "インポート";
             btnImport.UseVisualStyleBackColor = true;
+            btnImport.Click += btnImport_Click;
             // 
             // lblFilePath
             // 
@@ -76,9 +78,9 @@
             lblNote.ForeColor = Color.Red;
             lblNote.Location = new Point(23, 117);
             lblNote.Name = "lblNote";
-            lblNote.Size = new Size(375, 15);
+            lblNote.Size = new Size(19, 15);
             lblNote.TabIndex = 4;
-            lblNote.Text = "※画像を設定する場合は以下のフォルダに画像ファイルの格納をお願いします。";
+            lblNote.Text = "※";
             // 
             // lblNotePath
             // 
