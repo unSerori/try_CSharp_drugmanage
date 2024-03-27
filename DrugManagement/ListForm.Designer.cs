@@ -42,11 +42,11 @@
             lblStock = new Label();
             lblCategory = new Label();
             lblName = new Label();
-            grddDrugs = new DataGridView();
+            gridDrugs = new DataGridView();
             lblHits = new Label();
             gbxSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudStockNum).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)grddDrugs).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridDrugs).BeginInit();
             SuspendLayout();
             // 
             // gbxSearch
@@ -124,6 +124,7 @@
             btnClear.TabIndex = 7;
             btnClear.Text = "クリア";
             btnClear.UseVisualStyleBackColor = true;
+            btnClear.Click += btnClear_Click;
             // 
             // btnSearch
             // 
@@ -133,6 +134,7 @@
             btnSearch.TabIndex = 6;
             btnSearch.Text = "検索";
             btnSearch.UseVisualStyleBackColor = true;
+            btnSearch.Click += btnSearch_Click;
             // 
             // lblPriceTo
             // 
@@ -179,13 +181,14 @@
             lblName.TabIndex = 0;
             lblName.Text = "薬品名 : ";
             // 
-            // grddDrugs
+            // gridDrugs
             // 
-            grddDrugs.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            grddDrugs.Location = new Point(12, 179);
-            grddDrugs.Name = "grddDrugs";
-            grddDrugs.Size = new Size(776, 259);
-            grddDrugs.TabIndex = 1;
+            gridDrugs.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            gridDrugs.Location = new Point(12, 179);
+            gridDrugs.Name = "gridDrugs";
+            gridDrugs.Size = new Size(776, 259);
+            gridDrugs.TabIndex = 1;
+            gridDrugs.CellContentClick += gridDrugs_CellContentClick;
             // 
             // lblHits
             // 
@@ -202,14 +205,14 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(lblHits);
-            Controls.Add(grddDrugs);
+            Controls.Add(gridDrugs);
             Controls.Add(gbxSearch);
             Name = "ListForm";
             Text = "一覧画面";
             gbxSearch.ResumeLayout(false);
             gbxSearch.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)nudStockNum).EndInit();
-            ((System.ComponentModel.ISupportInitialize)grddDrugs).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridDrugs).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -228,7 +231,7 @@
         private TextBox txtName;
         private Button btnClear;
         private Button btnSearch;
-        private DataGridView grddDrugs;
+        private DataGridView gridDrugs;
         private Label lblHits;
         private ComboBox cmbCategory;
         private NumericUpDown nudStockNum;

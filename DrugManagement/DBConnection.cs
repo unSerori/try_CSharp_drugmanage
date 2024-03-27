@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Data;
 
 namespace DrugManagement
 {
@@ -66,7 +67,7 @@ namespace DrugManagement
                         cmd.ExecuteNonQuery();
                     }
                 }
-            }catch (Exception ex) 
+            }catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -91,7 +92,7 @@ namespace DrugManagement
                 // SQLコマンドを設定
                 cmd.CommandText = "INSERT INTO drugs (name, category, price, stock, detail, image) VALUES(" +
                     $"'{name}', '{category}', '{price}', '{stock}', '{detail}', '{image}')";
-                cmd.ExecuteNonQuery();  // SQL実行
+                cmd.ExecuteNonQuery();  // 結果を返さないSQL文を実行
 
                 return true;  // 成功した場合
             }
@@ -112,7 +113,7 @@ namespace DrugManagement
             int countData = 0;
             try
             {
-                // .dbに接続
+                // DBに接続
                 using (SQLiteConnection sqlcon = new SQLiteConnection(sqlConnectionSb?.ToString()))
                 {
                     sqlcon.Open();  // 接続開始
@@ -135,6 +136,39 @@ namespace DrugManagement
             }
 
             return countData;  // 成功回数
+        }
+
+
+        /// <summary>
+        /// テーブルのデータをデータテーブルで取得
+        /// </summary>
+        /// <returns></returns>
+        public DataTable getDrugsData(string tablename)
+        {
+            try
+            {
+                // DBに接続
+                using (SQLiteConnection sqlcon = new SQLiteConnection(sqlConnectionSb?.ToString()))
+                {
+                    sqlcon.Open();  // 接続開始
+                    using(SQLiteCommand cmd = new SQLiteCommand(sqlcon))
+                    {
+                        cmd.CommandText = $"SELECT no AS '薬品番号', name AS '薬品名', category AS 'カテゴリ', price AS '金額', stock AS '在庫数' from {tablename}";  // コマンドテキストを作成
+                        using(var reader = cmd.ExecuteReader())  // 結果を返すSQL文を実行  // 結果を格納
+                        {
+                            // SQL文を実行しデータテーブルに読み込み
+                            DataTable datatable = new DataTable();  // テーブルデータを作成
+                            datatable.Load(reader);  // テーブルデータに結果を読み込む
+                            return datatable;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
         }
     }
 }
