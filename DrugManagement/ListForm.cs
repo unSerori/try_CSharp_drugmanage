@@ -26,7 +26,12 @@ namespace DrugManagement
             int HitsOfSearches = datatableDrugs.Rows.Count;  // データテーブルの行数を保存
             lblHits.Text = HitsOfSearches.ToString() + "件";  // 設定
 
-            // 
+            // セルの編集可能
+            foreach (DataGridViewColumn column in gridDrugs.Columns)  // すべての列をいったん編集不可に
+            {
+                column.ReadOnly = true;
+            }
+            gridDrugs.Columns["在庫数"].ReadOnly = false;  // 特定カラムのみ編集可能
 
             // 詳細ボタン設定
             DataGridViewButtonColumn columnDetail = new DataGridViewButtonColumn();  // 詳細ボタン列を作成
@@ -37,7 +42,16 @@ namespace DrugManagement
             // セルの背景色変更
             gridDrugs.Columns["在庫数"].DefaultCellStyle.BackColor = Color.AliceBlue;
         }
-        
+
+        // イベント
+        private void txtOnlyInt(object sender, KeyPressEventArgs e)
+        {
+            // 数字（0-9）, バックスペース, デリートキーの場合は許可
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;  // イベントを処理済みとしてマークし、入力を無視
+            }
+        }
 
         /// <summary>
         /// 検索ボタン
