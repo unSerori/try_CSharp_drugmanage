@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace DrugManagement
 {
@@ -18,12 +19,14 @@ namespace DrugManagement
 
             // DBから一覧取得
             DBConnection dbcon = new DBConnection();  // 接続用のインスタンスを作成
-            DataTable datatableDrugs = dbcon.getDrugsData("drugs");  // データテーブル取得
+            DataTable datatableDrugs = dbcon.getDrugsData();  // データテーブル取得
             gridDrugs.DataSource = datatableDrugs;  // データテーブルをgridのDatasourceプロパティに設定
 
             // 検索結果数表示
             int HitsOfSearches = datatableDrugs.Rows.Count;  // データテーブルの行数を保存
             lblHits.Text = HitsOfSearches.ToString() + "件";  // 設定
+
+            // 
 
             // 詳細ボタン設定
             DataGridViewButtonColumn columnDetail = new DataGridViewButtonColumn();  // 詳細ボタン列を作成
@@ -31,13 +34,37 @@ namespace DrugManagement
             columnDetail.Text = "詳細";  // ボタンの中に表示するテキスト設定
             columnDetail.UseColumnTextForButtonValue = true;  // ボタンの中のテキストを表示する設定をONにする。(これをしないとまっさらなボタンになる。)
             gridDrugs.Columns.Add(columnDetail);  // 行を追加
-            // 背景色変更
+            // セルの背景色変更
             gridDrugs.Columns["在庫数"].DefaultCellStyle.BackColor = Color.AliceBlue;
         }
+        
 
+        /// <summary>
+        /// 検索ボタン
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            MessageBox.Show($"薬品名{txtName.Text}, カテゴリ{cmbCategory.Text}, 在庫の表示{nudStockNum.Text}, 下限{txtPriceAbove.Text}, 上限{txtPriceBelow.Text}, 在庫の値{nudStockNum.Value}");
+            // 条件取得
+            MessageBox.Show($"nudStockNum.Text: {nudStockNum.Text}, nudStockNum.Value: {nudStockNum.Value}");
+            
+            // 検索関数に投げる
+            DBConnection dbcon = new DBConnection();  // インスタンス生成
+            DataTable dataTable = dbcon.getDrugsData(txtName.Text, cmbCategory.Text, nudStockNum.Text, txtPriceAbove.Text, txtPriceBelow.Text);
+            //MessageBox.Show($"薬品名{txtName.Text}, カテゴリ{cmbCategory.Text}, 在庫の表示{nudStockNum.Text}, 下限{txtPriceAbove.Text}, 上限{txtPriceBelow.Text}, 在庫の値{nudStockNum.Value}");
+            gridDrugs.DataSource = dataTable;  // データテーブルをgridのDataSourceプロパティに設定し反映させる。
+
+            // 検索結果数表示
+            if (dataTable.Rows == null)
+            {
+                lblHits.Text = dataTable.Rows.Count + "0件";
+            }
+            else
+            {
+                lblHits.Text = dataTable.Rows.Count.ToString() + "件";
+            }
+
         }
 
         /// <summary>

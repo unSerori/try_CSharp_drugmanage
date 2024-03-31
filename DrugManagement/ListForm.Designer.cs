@@ -81,6 +81,7 @@
             // cmbCategory
             // 
             cmbCategory.FormattingEnabled = true;
+            cmbCategory.Items.AddRange(new object[] { "医薬品・医薬部外品", "化粧品", "日用品" });
             cmbCategory.Location = new Point(96, 64);
             cmbCategory.Name = "cmbCategory";
             cmbCategory.Size = new Size(100, 23);

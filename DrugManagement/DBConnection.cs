@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.SQLite;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using System.Data;
+using System.Security.Cryptography;
 
 namespace DrugManagement
 {
@@ -117,7 +118,7 @@ namespace DrugManagement
                 using (SQLiteConnection sqlcon = new SQLiteConnection(sqlConnectionSb?.ToString()))
                 {
                     sqlcon.Open();  // 接続開始
-                    using(SQLiteCommand cmd = new SQLiteCommand(sqlcon))
+                    using(SQLiteCommand cmd = new SQLiteCommand(sqlcon))  // SQLコマンドに接続を渡す
                     {
                         // foreach
                         foreach (var line in csvCata)  // 一行ずつ取り出す。
@@ -143,7 +144,7 @@ namespace DrugManagement
         /// テーブルのデータをデータテーブルで取得
         /// </summary>
         /// <returns></returns>
-        public DataTable getDrugsData(string tablename)
+        public DataTable getDrugsData()
         {
             try
             {
@@ -153,10 +154,10 @@ namespace DrugManagement
                     sqlcon.Open();  // 接続開始
                     using(SQLiteCommand cmd = new SQLiteCommand(sqlcon))
                     {
-                        cmd.CommandText = $"SELECT no AS '薬品番号', name AS '薬品名', category AS 'カテゴリ', price AS '金額', stock AS '在庫数' from {tablename}";  // コマンドテキストを作成
-                        using(var reader = cmd.ExecuteReader())  // 結果を返すSQL文を実行  // 結果を格納
+                        cmd.CommandText = "SELECT no AS '薬品番号', name AS '薬品名', category AS 'カテゴリ', price AS '金額', stock AS '在庫数' from drugs";  // コマンドテキストを作成
+                        using(var reader = cmd.ExecuteReader())  // 結果を返すSQL文を実行し結果を保存
                         {
-                            // SQL文を実行しデータテーブルに読み込み
+                            // 実行結果をデータテーブルに読み込み返す
                             DataTable datatable = new DataTable();  // テーブルデータを作成
                             datatable.Load(reader);  // テーブルデータに結果を読み込む
                             return datatable;
@@ -165,6 +166,79 @@ namespace DrugManagement
                 }
             }
             catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 条件を指定して検索結果を返す
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="category"></param>
+        /// <param name="stock"></param>
+        /// <param name="priceAbove"></param>
+        /// <param name="priceBelow"></param>
+        /// <returns></returns>
+        public DataTable getDrugsData(string name, string category, string stock, string priceAbove, string priceBelow)
+        {
+            try
+            {
+                // DBに接続
+                using (SQLiteConnection sqlcon = new SQLiteConnection(sqlConnectionSb?.ToString()))
+                {
+                    sqlcon.Open();  // 接続開始
+
+                    using(SQLiteCommand cmd = new SQLiteCommand(sqlcon))  // SQLコマンドに接続を渡す
+                    {
+                        // クエリ作成
+                        string sql = "SELECT no AS '薬品番号', name AS '薬品名', category AS 'カテゴリ', price AS '金額', stock AS '在庫数' from drugs";  // ベースのSQL
+                        string sqlWhere = " WHERE 1 = 1";  // 空の場合を考慮する
+                                                           
+                        
+                        // 条件作成
+                        if (name != "")  // 薬品名 部分一致
+                        {
+                            sqlWhere += ($" AND name LIKE '%{name}%'");
+                        }
+                        if (category != "")  // カテゴリ 完全一致
+                        {
+                            sqlWhere += ($" AND category = '{category}'");
+                        }
+                        if (stock != "")  // 在庫数 以下
+                        {
+                            sqlWhere += ($" AND stock <= {stock}");
+                        }
+                        if (priceAbove != "")  // 金額範囲
+                        {
+                            sqlWhere += ($" AND price >= {priceAbove}");
+                        }
+                        if (priceBelow != "")
+                        {
+                            sqlWhere += ($" AND price <= {priceBelow}");
+                        }
+                            
+
+                        // 統合
+                        sql += sqlWhere;  // WHERE文を結合
+                        cmd.CommandText = sql;  // コマンドテキストに設定
+
+                        MessageBox.Show(sql);
+
+                        using(var reader = cmd.ExecuteReader())  // 結果を返すSQL文を実行し結果を保存
+                        {
+                            // 実行結果をデータテーブルに読み込み返す
+                            DataTable datatable = new DataTable();  // テーブルデータを作成
+                            datatable.Load(reader);  // テーブルデータに結果を読み込む
+                            return datatable;
+                        }
+                    }
+
+
+                }
+            }
+            catch(Exception ex) 
             {
                 MessageBox.Show(ex.Message);
                 return null;
