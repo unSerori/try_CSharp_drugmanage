@@ -112,9 +112,14 @@ namespace DrugManagement
 
         }
 
+        /// <summary>
+        /// リスト画面を閉じる
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnCancelListForm_Click(object sender, EventArgs e)
         {
-
+            this.Hide();  // this.Close();
         }
     }
 }
