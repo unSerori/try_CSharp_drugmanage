@@ -44,6 +44,8 @@
             lblName = new Label();
             gridDrugs = new DataGridView();
             lblHits = new Label();
+            button1 = new Button();
+            button2 = new Button();
             gbxSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudStockNum).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridDrugs).BeginInit();
@@ -187,7 +189,7 @@
             gridDrugs.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             gridDrugs.Location = new Point(12, 179);
             gridDrugs.Name = "gridDrugs";
-            gridDrugs.Size = new Size(776, 259);
+            gridDrugs.Size = new Size(776, 230);
             gridDrugs.TabIndex = 1;
             gridDrugs.CellContentClick += gridDrugs_CellContentClick;
             // 
@@ -200,11 +202,31 @@
             lblHits.TabIndex = 2;
             lblHits.Text = "0件";
             // 
+            // button1
+            // 
+            button1.Location = new Point(632, 415);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 3;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(713, 415);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 4;
+            button2.Text = "button2";
+            button2.UseVisualStyleBackColor = true;
+            // 
             // ListForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(button2);
+            Controls.Add(button1);
             Controls.Add(lblHits);
             Controls.Add(gridDrugs);
             Controls.Add(gbxSearch);
@@ -236,5 +258,7 @@
         private Label lblHits;
         private ComboBox cmbCategory;
         private NumericUpDown nudStockNum;
+        private Button button1;
+        private Button button2;
     }
 }
