@@ -62,7 +62,7 @@ namespace DrugManagement
         {
             // 条件取得
             MessageBox.Show($"nudStockNum.Text: {nudStockNum.Text}, nudStockNum.Value: {nudStockNum.Value}");
-            
+
             // 検索関数に投げる
             DBConnection dbcon = new DBConnection();  // インスタンス生成
             DataTable dataTable = dbcon.getDrugsData(txtName.Text, cmbCategory.Text, nudStockNum.Text, txtPriceAbove.Text, txtPriceBelow.Text);
@@ -105,6 +105,16 @@ namespace DrugManagement
             // 引数に渡し遷移
             int drugNo = int.Parse(gridDrugs.Rows[e.RowIndex].Cells["薬品番号"].Value.ToString());
             // 詳細画面のインスタンス
+        }
+
+        private void btnDataUpd_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCancelListForm_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -44,8 +44,8 @@
             lblName = new Label();
             gridDrugs = new DataGridView();
             lblHits = new Label();
-            button1 = new Button();
-            button2 = new Button();
+            btnDataUpd = new Button();
+            btnCancelListForm = new Button();
             gbxSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudStockNum).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridDrugs).BeginInit();
@@ -202,31 +202,33 @@
             lblHits.TabIndex = 2;
             lblHits.Text = "0件";
             // 
-            // button1
+            // btnDataUpd
             // 
-            button1.Location = new Point(632, 415);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 3;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
+            btnDataUpd.Location = new Point(632, 415);
+            btnDataUpd.Name = "btnDataUpd";
+            btnDataUpd.Size = new Size(75, 23);
+            btnDataUpd.TabIndex = 3;
+            btnDataUpd.Text = "更新";
+            btnDataUpd.UseVisualStyleBackColor = true;
+            btnDataUpd.Click += btnDataUpd_Click;
             // 
-            // button2
+            // btnCancelListForm
             // 
-            button2.Location = new Point(713, 415);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 4;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
+            btnCancelListForm.Location = new Point(713, 415);
+            btnCancelListForm.Name = "btnCancelListForm";
+            btnCancelListForm.Size = new Size(75, 23);
+            btnCancelListForm.TabIndex = 4;
+            btnCancelListForm.Text = "キャンセル";
+            btnCancelListForm.UseVisualStyleBackColor = true;
+            btnCancelListForm.Click += btnCancelListForm_Click;
             // 
             // ListForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(btnCancelListForm);
+            Controls.Add(btnDataUpd);
             Controls.Add(lblHits);
             Controls.Add(gridDrugs);
             Controls.Add(gbxSearch);
@@ -258,7 +260,7 @@
         private Label lblHits;
         private ComboBox cmbCategory;
         private NumericUpDown nudStockNum;
-        private Button button1;
-        private Button button2;
+        private Button btnDataUpd;
+        private Button btnCancelListForm;
     }
 }
