@@ -13,6 +13,9 @@ namespace DrugManagement
 {
     public partial class ListForm : Form
     {
+        // fields
+        private List<DataGridViewRow> editedRows = new List<DataGridViewRow>();  // 編集を検知された行が格納されるリスト
+
         public ListForm()
         {
             InitializeComponent();
@@ -26,12 +29,19 @@ namespace DrugManagement
             int HitsOfSearches = datatableDrugs.Rows.Count;  // データテーブルの行数を保存
             lblHits.Text = HitsOfSearches.ToString() + "件";  // 設定
 
+            // テキストボックスの入力制限
+            txtPriceAbove.KeyPress += new KeyPressEventHandler(txtOnlyInt);
+            txtPriceBelow.KeyPress += new KeyPressEventHandler(txtOnlyInt);
+
             // セルの編集可能
             foreach (DataGridViewColumn column in gridDrugs.Columns)  // すべての列をいったん編集不可に
             {
                 column.ReadOnly = true;
             }
             gridDrugs.Columns["在庫数"].ReadOnly = false;  // 特定カラムのみ編集可能
+
+            // セルの変更を保存
+            gridDrugs.CellValueChanged += GridDrugs_CellValueChanged;  
 
             // 詳細ボタン設定
             DataGridViewButtonColumn columnDetail = new DataGridViewButtonColumn();  // 詳細ボタン列を作成
@@ -43,7 +53,12 @@ namespace DrugManagement
             gridDrugs.Columns["在庫数"].DefaultCellStyle.BackColor = Color.AliceBlue;
         }
 
-        // イベント
+        // イベント処理関数
+        /// <summary>
+        /// テキストボックスの入力を制限
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void txtOnlyInt(object sender, KeyPressEventArgs e)
         {
             // 数字（0-9）, バックスペース, デリートキーの場合は許可
@@ -51,6 +66,22 @@ namespace DrugManagement
             {
                 e.Handled = true;  // イベントを処理済みとしてマークし、入力を無視
             }
+        }
+
+        /// <summary>
+        /// セルが更新されたときのイベントハンドラ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GridDrugs_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            // 値を保存
+            DataGridViewRow editedRow = gridDrugs.Rows[e.RowIndex];
+            if (!editedRows.Contains(editedRow))  // すでに同じ状態の列があるなら追加しない
+            {
+                editedRows.Add(editedRow);  // 追加
+            }
+
         }
 
         /// <summary>
@@ -109,7 +140,13 @@ namespace DrugManagement
 
         private void btnDataUpd_Click(object sender, EventArgs e)
         {
+            // DBのデータを更新
+            DBConnection dbcon = new DBConnection();  // 接続用のインスタンスを作成
+            int updatedCounts = dbcon.updateDrugsDGVRListStock(editedRows);  // 更新処理を呼び出す
 
+            MessageBox.Show($"{updatedCounts}/{editedRows.Count()}件のデータが更新されました");  // メッセージ
+
+            editedRows.Clear();  // 更新された行群のクリア
         }
 
         /// <summary>

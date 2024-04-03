@@ -75,7 +75,7 @@ namespace DrugManagement
         }
 
         /// <summary>
-        /// Insert処理
+        /// Insert用実行処理
         /// </summary>
         /// <param name="cmd"></param>
         /// <param name="name"></param>
@@ -243,6 +243,61 @@ namespace DrugManagement
                 MessageBox.Show(ex.Message);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Update用実行処理
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="no"></param>
+        /// <param name="stock"></param>
+        /// <returns></returns>
+        private Boolean updateDrugStockSQL(SQLiteCommand cmd, string no, string stock)
+        {
+            try
+            {
+                // SQLコマンドを設定
+                cmd.CommandText = $"UPDATE drugs SET stock = {stock} WHERE no = {no}";
+                MessageBox.Show(cmd.CommandText);
+                cmd.ExecuteNonQuery();  // 結果を返さないSQL文を実行
+
+                return true;  // 成功した場合
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;  // 失敗
+            }
+        }
+
+        public int updateDrugsDGVRListStock(List<DataGridViewRow> editedRows)
+        {
+            int countData = 0;  // 成功回数をカウント
+            try
+            {
+                // DBに接続
+                using (SQLiteConnection sqlcon = new SQLiteConnection(sqlConnectionSb?.ToString()))  // SQLコマンドに接続を渡す
+                {
+                    sqlcon.Open();  // 接続開始
+                    using(SQLiteCommand cmd = sqlcon.CreateCommand())  // SQLコマンドに接続を渡す
+                    {
+                        // foreach
+                        foreach (var row in editedRows)  // 一行ずつ取り出す
+                        {
+                            if (updateDrugStockSQL(cmd, row.Cells["薬品番号"].Value.ToString(), row.Cells["在庫数"].Value.ToString()))
+                            {
+                                countData++;  // 処理が成功したらカウントする
+                            }
+                        }
+                    }
+                }
+            }
+            catch(Exception ex )
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+            return countData;  // 成功回数
         }
     }
 }
