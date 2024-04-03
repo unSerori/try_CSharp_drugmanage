@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Data;
+using System.Security.Cryptography;
 
 namespace DrugManagement
 {
@@ -66,14 +68,14 @@ namespace DrugManagement
                         cmd.ExecuteNonQuery();
                     }
                 }
-            }catch (Exception ex) 
+            }catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
 
         /// <summary>
-        /// Insert処理
+        /// Insert用実行処理
         /// </summary>
         /// <param name="cmd"></param>
         /// <param name="name"></param>
@@ -91,7 +93,7 @@ namespace DrugManagement
                 // SQLコマンドを設定
                 cmd.CommandText = "INSERT INTO drugs (name, category, price, stock, detail, image) VALUES(" +
                     $"'{name}', '{category}', '{price}', '{stock}', '{detail}', '{image}')";
-                cmd.ExecuteNonQuery();  // SQL実行
+                cmd.ExecuteNonQuery();  // 結果を返さないSQL文を実行
 
                 return true;  // 成功した場合
             }
@@ -112,11 +114,11 @@ namespace DrugManagement
             int countData = 0;
             try
             {
-                // .dbに接続
+                // DBに接続
                 using (SQLiteConnection sqlcon = new SQLiteConnection(sqlConnectionSb?.ToString()))
                 {
                     sqlcon.Open();  // 接続開始
-                    using(SQLiteCommand cmd = new SQLiteCommand(sqlcon))
+                    using(SQLiteCommand cmd = new SQLiteCommand(sqlcon))  // SQLコマンドに接続を渡す
                     {
                         // foreach
                         foreach (var line in csvCata)  // 一行ずつ取り出す。
@@ -134,6 +136,167 @@ namespace DrugManagement
                 MessageBox.Show(ex.Message);
             }
 
+            return countData;  // 成功回数
+        }
+
+
+        /// <summary>
+        /// テーブルのデータをデータテーブルで取得
+        /// </summary>
+        /// <returns></returns>
+        public DataTable getDrugsData()
+        {
+            try
+            {
+                // DBに接続
+                using (SQLiteConnection sqlcon = new SQLiteConnection(sqlConnectionSb?.ToString()))
+                {
+                    sqlcon.Open();  // 接続開始
+                    using(SQLiteCommand cmd = new SQLiteCommand(sqlcon))
+                    {
+                        cmd.CommandText = "SELECT no AS '薬品番号', name AS '薬品名', category AS 'カテゴリ', price AS '金額', stock AS '在庫数' from drugs";  // コマンドテキストを作成
+                        using(var reader = cmd.ExecuteReader())  // 結果を返すSQL文を実行し結果を保存
+                        {
+                            // 実行結果をデータテーブルに読み込み返す
+                            DataTable datatable = new DataTable();  // テーブルデータを作成
+                            datatable.Load(reader);  // テーブルデータに結果を読み込む
+                            return datatable;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 条件を指定して検索結果を返す
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="category"></param>
+        /// <param name="stock"></param>
+        /// <param name="priceAbove"></param>
+        /// <param name="priceBelow"></param>
+        /// <returns></returns>
+        public DataTable getDrugsData(string name, string category, string stock, string priceAbove, string priceBelow)
+        {
+            try
+            {
+                // DBに接続
+                using (SQLiteConnection sqlcon = new SQLiteConnection(sqlConnectionSb?.ToString()))
+                {
+                    sqlcon.Open();  // 接続開始
+
+                    using(SQLiteCommand cmd = new SQLiteCommand(sqlcon))  // SQLコマンドに接続を渡す
+                    {
+                        // クエリ作成
+                        string sql = "SELECT no AS '薬品番号', name AS '薬品名', category AS 'カテゴリ', price AS '金額', stock AS '在庫数' from drugs";  // ベースのSQL
+                        string sqlWhere = " WHERE 1 = 1";  // 空の場合を考慮する
+                                                           
+                        
+                        // 条件作成
+                        if (name != "")  // 薬品名 部分一致
+                        {
+                            sqlWhere += ($" AND name LIKE '%{name}%'");
+                        }
+                        if (category != "")  // カテゴリ 完全一致
+                        {
+                            sqlWhere += ($" AND category = '{category}'");
+                        }
+                        if (stock != "")  // 在庫数 以下
+                        {
+                            sqlWhere += ($" AND stock <= {stock}");
+                        }
+                        if (priceAbove != "")  // 金額範囲
+                        {
+                            sqlWhere += ($" AND price >= {priceAbove}");
+                        }
+                        if (priceBelow != "")
+                        {
+                            sqlWhere += ($" AND price <= {priceBelow}");
+                        }
+                            
+
+                        // 統合
+                        sql += sqlWhere;  // WHERE文を結合
+                        cmd.CommandText = sql;  // コマンドテキストに設定
+
+                        MessageBox.Show(sql);
+
+                        using(var reader = cmd.ExecuteReader())  // 結果を返すSQL文を実行し結果を保存
+                        {
+                            // 実行結果をデータテーブルに読み込み返す
+                            DataTable datatable = new DataTable();  // テーブルデータを作成
+                            datatable.Load(reader);  // テーブルデータに結果を読み込む
+                            return datatable;
+                        }
+                    }
+
+
+                }
+            }
+            catch(Exception ex) 
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Update用実行処理
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="no"></param>
+        /// <param name="stock"></param>
+        /// <returns></returns>
+        private Boolean updateDrugStockSQL(SQLiteCommand cmd, string no, string stock)
+        {
+            try
+            {
+                // SQLコマンドを設定
+                cmd.CommandText = $"UPDATE drugs SET stock = {stock} WHERE no = {no}";
+                MessageBox.Show(cmd.CommandText);
+                cmd.ExecuteNonQuery();  // 結果を返さないSQL文を実行
+
+                return true;  // 成功した場合
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;  // 失敗
+            }
+        }
+
+        public int updateDrugsDGVRListStock(List<DataGridViewRow> editedRows)
+        {
+            int countData = 0;  // 成功回数をカウント
+            try
+            {
+                // DBに接続
+                using (SQLiteConnection sqlcon = new SQLiteConnection(sqlConnectionSb?.ToString()))  // SQLコマンドに接続を渡す
+                {
+                    sqlcon.Open();  // 接続開始
+                    using(SQLiteCommand cmd = sqlcon.CreateCommand())  // SQLコマンドに接続を渡す
+                    {
+                        // foreach
+                        foreach (var row in editedRows)  // 一行ずつ取り出す
+                        {
+                            if (updateDrugStockSQL(cmd, row.Cells["薬品番号"].Value.ToString(), row.Cells["在庫数"].Value.ToString()))
+                            {
+                                countData++;  // 処理が成功したらカウントする
+                            }
+                        }
+                    }
+                }
+            }
+            catch(Exception ex )
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
             return countData;  // 成功回数
         }
     }

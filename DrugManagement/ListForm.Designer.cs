@@ -42,11 +42,13 @@
             lblStock = new Label();
             lblCategory = new Label();
             lblName = new Label();
-            grddDrugs = new DataGridView();
+            gridDrugs = new DataGridView();
             lblHits = new Label();
+            btnDataUpd = new Button();
+            btnCancelListForm = new Button();
             gbxSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudStockNum).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)grddDrugs).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridDrugs).BeginInit();
             SuspendLayout();
             // 
             // gbxSearch
@@ -81,6 +83,7 @@
             // cmbCategory
             // 
             cmbCategory.FormattingEnabled = true;
+            cmbCategory.Items.AddRange(new object[] { "医薬品・医薬部外品", "化粧品", "日用品" });
             cmbCategory.Location = new Point(96, 64);
             cmbCategory.Name = "cmbCategory";
             cmbCategory.Size = new Size(100, 23);
@@ -124,6 +127,7 @@
             btnClear.TabIndex = 7;
             btnClear.Text = "クリア";
             btnClear.UseVisualStyleBackColor = true;
+            btnClear.Click += btnClear_Click;
             // 
             // btnSearch
             // 
@@ -133,6 +137,7 @@
             btnSearch.TabIndex = 6;
             btnSearch.Text = "検索";
             btnSearch.UseVisualStyleBackColor = true;
+            btnSearch.Click += btnSearch_Click;
             // 
             // lblPriceTo
             // 
@@ -179,13 +184,14 @@
             lblName.TabIndex = 0;
             lblName.Text = "薬品名 : ";
             // 
-            // grddDrugs
+            // gridDrugs
             // 
-            grddDrugs.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            grddDrugs.Location = new Point(12, 179);
-            grddDrugs.Name = "grddDrugs";
-            grddDrugs.Size = new Size(776, 259);
-            grddDrugs.TabIndex = 1;
+            gridDrugs.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            gridDrugs.Location = new Point(12, 179);
+            gridDrugs.Name = "gridDrugs";
+            gridDrugs.Size = new Size(776, 230);
+            gridDrugs.TabIndex = 1;
+            gridDrugs.CellContentClick += gridDrugs_CellContentClick;
             // 
             // lblHits
             // 
@@ -196,20 +202,42 @@
             lblHits.TabIndex = 2;
             lblHits.Text = "0件";
             // 
+            // btnDataUpd
+            // 
+            btnDataUpd.Location = new Point(632, 415);
+            btnDataUpd.Name = "btnDataUpd";
+            btnDataUpd.Size = new Size(75, 23);
+            btnDataUpd.TabIndex = 3;
+            btnDataUpd.Text = "更新";
+            btnDataUpd.UseVisualStyleBackColor = true;
+            btnDataUpd.Click += btnDataUpd_Click;
+            // 
+            // btnCancelListForm
+            // 
+            btnCancelListForm.Location = new Point(713, 415);
+            btnCancelListForm.Name = "btnCancelListForm";
+            btnCancelListForm.Size = new Size(75, 23);
+            btnCancelListForm.TabIndex = 4;
+            btnCancelListForm.Text = "キャンセル";
+            btnCancelListForm.UseVisualStyleBackColor = true;
+            btnCancelListForm.Click += btnCancelListForm_Click;
+            // 
             // ListForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnCancelListForm);
+            Controls.Add(btnDataUpd);
             Controls.Add(lblHits);
-            Controls.Add(grddDrugs);
+            Controls.Add(gridDrugs);
             Controls.Add(gbxSearch);
             Name = "ListForm";
             Text = "一覧画面";
             gbxSearch.ResumeLayout(false);
             gbxSearch.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)nudStockNum).EndInit();
-            ((System.ComponentModel.ISupportInitialize)grddDrugs).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridDrugs).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -228,9 +256,11 @@
         private TextBox txtName;
         private Button btnClear;
         private Button btnSearch;
-        private DataGridView grddDrugs;
+        private DataGridView gridDrugs;
         private Label lblHits;
         private ComboBox cmbCategory;
         private NumericUpDown nudStockNum;
+        private Button btnDataUpd;
+        private Button btnCancelListForm;
     }
 }
