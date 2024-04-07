@@ -191,7 +191,6 @@
             gridDrugs.Name = "gridDrugs";
             gridDrugs.Size = new Size(776, 230);
             gridDrugs.TabIndex = 1;
-            gridDrugs.CellContentClick += gridDrugs_CellContentClick;
             // 
             // lblHits
             // 
