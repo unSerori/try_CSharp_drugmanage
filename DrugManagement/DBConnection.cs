@@ -224,7 +224,7 @@ namespace DrugManagement
                         sql += sqlWhere;  // WHERE文を結合
                         cmd.CommandText = sql;  // コマンドテキストに設定
 
-                        MessageBox.Show(sql);
+                        //MessageBox.Show(sql);
 
                         using(var reader = cmd.ExecuteReader())  // 結果を返すSQL文を実行し結果を保存
                         {
@@ -258,7 +258,7 @@ namespace DrugManagement
             {
                 // SQLコマンドを設定
                 cmd.CommandText = $"UPDATE drugs SET stock = {stock} WHERE no = {no}";
-                MessageBox.Show(cmd.CommandText);
+                //MessageBox.Show(cmd.CommandText);
                 cmd.ExecuteNonQuery();  // 結果を返さないSQL文を実行
 
                 return true;  // 成功した場合
@@ -270,13 +270,18 @@ namespace DrugManagement
             }
         }
 
+        /// <summary>
+        /// 渡された行データリストでDBを更新
+        /// </summary>
+        /// <param name="editedRows"></param>
+        /// <returns></returns>
         public int updateDrugsDGVRListStock(List<DataGridViewRow> editedRows)
         {
             int countData = 0;  // 成功回数をカウント
             try
             {
                 // DBに接続
-                using (SQLiteConnection sqlcon = new SQLiteConnection(sqlConnectionSb?.ToString()))  // SQLコマンドに接続を渡す
+                using (SQLiteConnection sqlcon = new SQLiteConnection(sqlConnectionSb?.ToString()))
                 {
                     sqlcon.Open();  // 接続開始
                     using(SQLiteCommand cmd = sqlcon.CreateCommand())  // SQLコマンドに接続を渡す
@@ -298,6 +303,42 @@ namespace DrugManagement
             }
             
             return countData;  // 成功回数
+        }
+
+        /// <summary>
+        /// 薬品の詳細情報を取得
+        /// </summary>
+        /// <param name="no"></param>
+        /// <returns></returns>
+        public DataTable getDbugData(int no)
+        {
+            try
+            {
+                // DBに接続
+                using (SQLiteConnection sqlcon = new SQLiteConnection(sqlConnectionSb?.ToString()))
+                {
+                    sqlcon.Open();  // 接続開始
+
+                    using(SQLiteCommand cmd = new SQLiteCommand(sqlcon))  // SQLコマンドに接続を渡す
+                    {
+                        cmd.CommandText = "SELECT * FROM drugs WHERE no = @no";  // ベースのSQLクエリを作成
+                        cmd.Parameters.AddWithValue("@no", no);  // パラメータを置き換え
+
+                        using (var reader = cmd.ExecuteReader())  // 結果を返すSQL文を実行し結果を保存
+                        {
+                            // 実行結果をデータテーブルに読み込み返す
+                            DataTable datatable = new DataTable();  // テーブルデータを作成
+                            datatable.Load(reader);  // テーブルデータに結果を読み込む
+                            return datatable;
+                        }
+                    }
+                }
+            }
+            catch(Exception ex )
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
         }
     }
 }
