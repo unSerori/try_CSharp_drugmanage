@@ -33,15 +33,15 @@
             lblPrice = new Label();
             lblStock = new Label();
             lblExplanation = new Label();
-            pictureBox1 = new PictureBox();
+            picDrug = new PictureBox();
             btnL = new Button();
             btnR = new Button();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            textBox4 = new TextBox();
-            textBox5 = new TextBox();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            txtName = new TextBox();
+            txtCategory = new TextBox();
+            txtPrice = new TextBox();
+            txtStock = new TextBox();
+            txtExplanation = new TextBox();
+            ((System.ComponentModel.ISupportInitialize)picDrug).BeginInit();
             SuspendLayout();
             // 
             // lblName
@@ -89,13 +89,13 @@
             lblExplanation.TabIndex = 4;
             lblExplanation.Text = "商品説明 : ";
             // 
-            // pictureBox1
+            // picDrug
             // 
-            pictureBox1.Location = new Point(293, 35);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(249, 199);
-            pictureBox1.TabIndex = 5;
-            pictureBox1.TabStop = false;
+            picDrug.Location = new Point(293, 35);
+            picDrug.Name = "picDrug";
+            picDrug.Size = new Size(249, 199);
+            picDrug.TabIndex = 5;
+            picDrug.TabStop = false;
             // 
             // btnL
             // 
@@ -119,65 +119,66 @@
             btnR.UseVisualStyleBackColor = true;
             btnR.Click += btnR_Click;
             // 
-            // textBox1
+            // txtName
             // 
-            textBox1.Location = new Point(82, 6);
-            textBox1.Name = "textBox1";
-            textBox1.ReadOnly = true;
-            textBox1.Size = new Size(460, 23);
-            textBox1.TabIndex = 8;
-            textBox1.TabStop = false;
+            txtName.Location = new Point(82, 6);
+            txtName.Name = "txtName";
+            txtName.ReadOnly = true;
+            txtName.Size = new Size(460, 23);
+            txtName.TabIndex = 8;
+            txtName.TabStop = false;
             // 
-            // textBox2
+            // txtCategory
             // 
-            textBox2.Location = new Point(82, 44);
-            textBox2.Name = "textBox2";
-            textBox2.ReadOnly = true;
-            textBox2.Size = new Size(192, 23);
-            textBox2.TabIndex = 9;
-            textBox2.TabStop = false;
+            txtCategory.Location = new Point(82, 44);
+            txtCategory.Name = "txtCategory";
+            txtCategory.ReadOnly = true;
+            txtCategory.Size = new Size(192, 23);
+            txtCategory.TabIndex = 9;
+            txtCategory.TabStop = false;
+            txtCategory.TextChanged += txtCategory_TextChanged;
             // 
-            // textBox3
+            // txtPrice
             // 
-            textBox3.Location = new Point(82, 83);
-            textBox3.Name = "textBox3";
-            textBox3.ReadOnly = true;
-            textBox3.Size = new Size(192, 23);
-            textBox3.TabIndex = 10;
-            textBox3.TabStop = false;
+            txtPrice.Location = new Point(82, 83);
+            txtPrice.Name = "txtPrice";
+            txtPrice.ReadOnly = true;
+            txtPrice.Size = new Size(192, 23);
+            txtPrice.TabIndex = 10;
+            txtPrice.TabStop = false;
             // 
-            // textBox4
+            // txtStock
             // 
-            textBox4.Location = new Point(82, 120);
-            textBox4.Name = "textBox4";
-            textBox4.ReadOnly = true;
-            textBox4.Size = new Size(192, 23);
-            textBox4.TabIndex = 11;
-            textBox4.TabStop = false;
+            txtStock.Location = new Point(82, 120);
+            txtStock.Name = "txtStock";
+            txtStock.ReadOnly = true;
+            txtStock.Size = new Size(192, 23);
+            txtStock.TabIndex = 11;
+            txtStock.TabStop = false;
             // 
-            // textBox5
+            // txtExplanation
             // 
-            textBox5.Location = new Point(12, 237);
-            textBox5.Multiline = true;
-            textBox5.Name = "textBox5";
-            textBox5.ReadOnly = true;
-            textBox5.Size = new Size(530, 146);
-            textBox5.TabIndex = 12;
-            textBox5.TabStop = false;
+            txtExplanation.Location = new Point(12, 237);
+            txtExplanation.Multiline = true;
+            txtExplanation.Name = "txtExplanation";
+            txtExplanation.ReadOnly = true;
+            txtExplanation.Size = new Size(530, 146);
+            txtExplanation.TabIndex = 12;
+            txtExplanation.TabStop = false;
             // 
             // DetailForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(554, 450);
-            Controls.Add(textBox5);
-            Controls.Add(textBox4);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(txtExplanation);
+            Controls.Add(txtStock);
+            Controls.Add(txtPrice);
+            Controls.Add(txtCategory);
+            Controls.Add(txtName);
             Controls.Add(btnR);
             Controls.Add(btnL);
-            Controls.Add(pictureBox1);
+            Controls.Add(picDrug);
             Controls.Add(lblExplanation);
             Controls.Add(lblStock);
             Controls.Add(lblPrice);
@@ -185,7 +186,7 @@
             Controls.Add(lblName);
             Name = "DetailForm";
             Text = "DetailForm";
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)picDrug).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -197,13 +198,13 @@
         private Label lblPrice;
         private Label lblStock;
         private Label lblExplanation;
-        private PictureBox pictureBox1;
+        private PictureBox picDrug;
         private Button btnL;
         private Button btnR;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private TextBox textBox4;
-        private TextBox textBox5;
+        private TextBox txtName;
+        private TextBox txtCategory;
+        private TextBox txtPrice;
+        private TextBox txtStock;
+        private TextBox txtExplanation;
     }
 }

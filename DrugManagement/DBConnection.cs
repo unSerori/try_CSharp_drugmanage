@@ -321,7 +321,7 @@ namespace DrugManagement
 
                     using(SQLiteCommand cmd = new SQLiteCommand(sqlcon))  // SQLコマンドに接続を渡す
                     {
-                        cmd.CommandText = "SELECT * FROM drugs no = @no";  // ベースのSQLクエリを作成
+                        cmd.CommandText = "SELECT * FROM drugs WHERE no = @no";  // ベースのSQLクエリを作成
                         cmd.Parameters.AddWithValue("@no", no);  // パラメータを置き換え
 
                         using (var reader = cmd.ExecuteReader())  // 結果を返すSQL文を実行し結果を保存
