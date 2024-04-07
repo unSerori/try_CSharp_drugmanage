@@ -113,8 +113,7 @@ namespace DrugManagement
         /// <param name="e"></param>
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            // 条件取得
-            MessageBox.Show($"nudStockNum.Text: {nudStockNum.Text}, nudStockNum.Value: {nudStockNum.Value}");
+            //MessageBox.Show($"nudStockNum.Text: {nudStockNum.Text}, nudStockNum.Value: {nudStockNum.Value}");
 
             // 検索関数に投げる
             DBConnection dbcon = new DBConnection();  // インスタンス生成

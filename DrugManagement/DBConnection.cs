@@ -224,7 +224,7 @@ namespace DrugManagement
                         sql += sqlWhere;  // WHERE文を結合
                         cmd.CommandText = sql;  // コマンドテキストに設定
 
-                        MessageBox.Show(sql);
+                        //MessageBox.Show(sql);
 
                         using(var reader = cmd.ExecuteReader())  // 結果を返すSQL文を実行し結果を保存
                         {
@@ -258,7 +258,7 @@ namespace DrugManagement
             {
                 // SQLコマンドを設定
                 cmd.CommandText = $"UPDATE drugs SET stock = {stock} WHERE no = {no}";
-                MessageBox.Show(cmd.CommandText);
+                //MessageBox.Show(cmd.CommandText);
                 cmd.ExecuteNonQuery();  // 結果を返さないSQL文を実行
 
                 return true;  // 成功した場合
