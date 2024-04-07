@@ -106,6 +106,7 @@
             btnL.TabIndex = 6;
             btnL.Text = "<<";
             btnL.UseVisualStyleBackColor = true;
+            btnL.Click += btnL_Click;
             // 
             // btnR
             // 
@@ -116,6 +117,7 @@
             btnR.TabIndex = 7;
             btnR.Text = ">>";
             btnR.UseVisualStyleBackColor = true;
+            btnR.Click += btnR_Click;
             // 
             // textBox1
             // 

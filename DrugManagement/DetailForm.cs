@@ -12,9 +12,34 @@ namespace DrugManagement
 {
     public partial class DetailForm : Form
     {
-        public DetailForm()
+        // fields
+        private int _no;  // ウィンドウのインスタンスに現在の図鑑番号を持たせる
+
+        public DetailForm(int no)
         {
             InitializeComponent();
+
+            this._no = no;
+
+            InitializeFormWithData();  // 画面作成
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void InitializeFormWithData()
+        {
+            
+        }
+
+        private void btnL_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnR_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -39,6 +39,7 @@ namespace DrugManagement
                 column.ReadOnly = true;
             }
             gridDrugs.Columns["在庫数"].ReadOnly = false;  // 特定カラムのみ編集可能
+            gridDrugs.Columns["在庫数"].DefaultCellStyle.BackColor = Color.AliceBlue;  // セルの背景色変更
 
             // セルの変更を保存
             gridDrugs.CellValueChanged += GridDrugs_CellValueChanged;  
@@ -49,8 +50,8 @@ namespace DrugManagement
             columnDetail.Text = "詳細";  // ボタンの中に表示するテキスト設定
             columnDetail.UseColumnTextForButtonValue = true;  // ボタンの中のテキストを表示する設定をONにする。(これをしないとまっさらなボタンになる。)
             gridDrugs.Columns.Add(columnDetail);  // 行を追加
-            // セルの背景色変更
-            gridDrugs.Columns["在庫数"].DefaultCellStyle.BackColor = Color.AliceBlue;
+            // グリッドのクリックイベント時にセルを限定し詳細のみウィンドウ遷移するイベントを紐づけ
+            gridDrugs.CellContentClick += GridDrugs_CellContentClick;
         }
 
         // イベント処理関数
@@ -67,7 +68,6 @@ namespace DrugManagement
                 e.Handled = true;  // イベントを処理済みとしてマークし、入力を無視
             }
         }
-
         /// <summary>
         /// セルが更新されたときのイベントハンドラ
         /// </summary>
@@ -81,7 +81,28 @@ namespace DrugManagement
             {
                 editedRows.Add(editedRow);  // 追加
             }
-
+        }
+        /// <summary>
+        /// グリッドツール(詳細ボタンに限定)をクリックした時の処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GridDrugs_CellContentClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            // 早期リターン
+            if (e.RowIndex < 0) { return; }  // ヘッダー列をクリックした場合 早期リターン
+            // セルの列種によって処理を変更
+            if (gridDrugs.Columns[e.ColumnIndex].HeaderText != "詳細")  // 詳細列以外
+            {
+                return;
+            }
+            else
+            {
+                // 引数に渡し遷移
+                int drugNo = int.Parse(gridDrugs.Rows[e.RowIndex].Cells["薬品番号"].Value.ToString());  // 値を取得
+                DetailForm detailForm = new DetailForm(drugNo);  // 詳細画面のインスタンス
+                detailForm.ShowDialog();  // ウィンドウを表示
+            }
         }
 
         /// <summary>
@@ -126,18 +147,12 @@ namespace DrugManagement
             txtPriceBelow.Text = "";  // 値段の上限クリア
         }
 
-        // グリッドツール(詳細ボタンに限定)をクリックした時の処理
-        private void gridDrugs_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            // 特定の要素に限定する
-            if (e.RowIndex < 0) { return; }  // 列ヘッダーをクリックした場合などにキャンセルする。
-            if (gridDrugs.Columns[e.ColumnIndex].HeaderText != "詳細") { return; }  // 特定要素以外の列をクリックした場合もキャンセルする。
 
-            // 引数に渡し遷移
-            int drugNo = int.Parse(gridDrugs.Rows[e.RowIndex].Cells["薬品番号"].Value.ToString());
-            // 詳細画面のインスタンス
-        }
-
+        /// <summary>
+        /// グリッドから編集した値を反映
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDataUpd_Click(object sender, EventArgs e)
         {
             // DBのデータを更新
