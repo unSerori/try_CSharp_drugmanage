@@ -13,7 +13,7 @@ namespace DrugManagement
     public partial class DetailForm : Form
     {
         // fields
-        private int _no;  // ウィンドウのインスタンスに現在の図鑑番号を持たせる
+        private int _index;  // ウィンドウのインスタンスに現在の図鑑番号を持たせる
         private DataTable _dataTalbe;  // 前後の薬品と薬品データ群の端を知るために一覧データを保持
 
         /// <summary>
@@ -21,12 +21,12 @@ namespace DrugManagement
         /// </summary>
         /// <param name="no"></param>
         /// <param name="dataTable"></param>
-        public DetailForm(int no, DataTable dataTable)
+        public DetailForm(int index, DataTable dataTable)
         {
             InitializeComponent();  // 画面デザインの初期化
 
             // ウィンドウに持たせるフィールドを初期化
-            this._no = no;  // 薬品番号
+            this._index = index;  // 現在の薬品番号を
             this._dataTalbe = dataTable;
 
             InitializeFormWithData();  // 画面作成
@@ -51,7 +51,7 @@ namespace DrugManagement
         {
             // 詳細データを取得
             DBConnection dbcon = new DBConnection();  // インスタンス生成
-            DataTable dataTable = dbcon.getDbugData(_no);  // 詳細データをデータテーブル形式で取得
+            DataTable dataTable = dbcon.getDbugData(Convert.ToInt32(_dataTalbe.Rows[_index].ItemArray[0]));  // 詳細データをデータテーブル形式で取得  // 検索一覧配列からindexで指定した要素のnoを取得して
 
             // 取得した値を反映
             // 取得された値をtxtにセット
@@ -77,10 +77,10 @@ namespace DrugManagement
         private void setButtonVisible()
         {
             //MessageBox.Show(_no.ToString());
-            // 行番号が最小値1なら左の要素に移動できないので非表示
-            btnL.Visible = _no == 1? false : true;
-            // 行番号が最大値_dataTable.Rows.Countなら右の要素に移動できないので非表示
-            btnR.Visible = _no == _dataTalbe.Rows.Count? false : true;
+            // 行番号が最小値0なら左の要素に移動できないので非表示
+            btnL.Visible = _index == 0? false : true;
+            // 行番号が最大値_dataTable.Rows.Count -1なら右の要素に移動できないので非表示
+            btnR.Visible = _index == _dataTalbe.Rows.Count -1? false : true;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace DrugManagement
         /// <param name="e"></param>
         private void btnL_Click(object sender, EventArgs e)
         {
-            _no--;  // フィールドの薬品番号を更新
+            _index--;  // フィールドの薬品番号を更新
             InitializeFormWithData();  // 画面の初期化
         }
 
@@ -101,7 +101,7 @@ namespace DrugManagement
         /// <param name="e"></param>
         private void btnR_Click(object sender, EventArgs e)
         {
-            _no++;  // フィールドの薬品番号を更新
+            _index++;  // フィールドの薬品番号を更新
             InitializeFormWithData();  // 画面の初期化
         }
     }

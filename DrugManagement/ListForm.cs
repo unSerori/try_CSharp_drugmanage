@@ -100,7 +100,7 @@ namespace DrugManagement
             else
             {
                 // 引数に渡し遷移
-                int drugNo = int.Parse(gridDrugs.Rows[e.RowIndex].Cells["薬品番号"].Value.ToString());  // 値を取得
+                int drugNo = e.RowIndex;  // 検索結果一覧において何行目なのかを与える。  // int.Parse(gridDrugs.Rows[e.RowIndex].Cells["薬品番号"].Value.ToString()) これは主キー値を渡している。
                 DetailForm detailForm = new DetailForm(drugNo, datatableDrugs);  // 詳細画面のインスタンス
                 detailForm.ShowDialog();  // ウィンドウを表示
             }
