@@ -136,7 +136,6 @@
             txtCategory.Size = new Size(192, 23);
             txtCategory.TabIndex = 9;
             txtCategory.TabStop = false;
-            txtCategory.TextChanged += txtCategory_TextChanged;
             // 
             // txtPrice
             // 

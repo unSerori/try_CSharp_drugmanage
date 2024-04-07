@@ -15,6 +15,7 @@ namespace DrugManagement
     {
         // fields
         private List<DataGridViewRow> editedRows = new List<DataGridViewRow>();  // 編集を検知された行が格納されるリスト
+        DataTable datatableDrugs;  // 一覧データを保持
 
         public ListForm()
         {
@@ -22,7 +23,7 @@ namespace DrugManagement
 
             // DBから一覧取得
             DBConnection dbcon = new DBConnection();  // 接続用のインスタンスを作成
-            DataTable datatableDrugs = dbcon.getDrugsData();  // データテーブル取得
+            datatableDrugs = dbcon.getDrugsData();  // データテーブル取得
             gridDrugs.DataSource = datatableDrugs;  // データテーブルをgridのDatasourceプロパティに設定
 
             // 検索結果数表示
@@ -90,7 +91,7 @@ namespace DrugManagement
         private void GridDrugs_CellContentClick(object? sender, DataGridViewCellEventArgs e)
         {
             // 早期リターン
-            if (e.RowIndex < 0) { return; }  // ヘッダー列をクリックした場合 早期リターン
+            if (e.RowIndex < 0 || e.RowIndex >= datatableDrugs.Rows.Count) { return; }  // ヘッダー列または最終行(新規行)をクリックした場合 早期リターン
             // セルの列種によって処理を変更
             if (gridDrugs.Columns[e.ColumnIndex].HeaderText != "詳細")  // 詳細列以外
             {
@@ -100,7 +101,7 @@ namespace DrugManagement
             {
                 // 引数に渡し遷移
                 int drugNo = int.Parse(gridDrugs.Rows[e.RowIndex].Cells["薬品番号"].Value.ToString());  // 値を取得
-                DetailForm detailForm = new DetailForm(drugNo);  // 詳細画面のインスタンス
+                DetailForm detailForm = new DetailForm(drugNo, datatableDrugs);  // 詳細画面のインスタンス
                 detailForm.ShowDialog();  // ウィンドウを表示
             }
         }
@@ -117,18 +118,18 @@ namespace DrugManagement
 
             // 検索関数に投げる
             DBConnection dbcon = new DBConnection();  // インスタンス生成
-            DataTable dataTable = dbcon.getDrugsData(txtName.Text, cmbCategory.Text, nudStockNum.Text, txtPriceAbove.Text, txtPriceBelow.Text);
+            datatableDrugs = dbcon.getDrugsData(txtName.Text, cmbCategory.Text, nudStockNum.Text, txtPriceAbove.Text, txtPriceBelow.Text);
             //MessageBox.Show($"薬品名{txtName.Text}, カテゴリ{cmbCategory.Text}, 在庫の表示{nudStockNum.Text}, 下限{txtPriceAbove.Text}, 上限{txtPriceBelow.Text}, 在庫の値{nudStockNum.Value}");
-            gridDrugs.DataSource = dataTable;  // データテーブルをgridのDataSourceプロパティに設定し反映させる。
+            gridDrugs.DataSource = datatableDrugs;  // データテーブルをgridのDataSourceプロパティに設定し反映させる。
 
             // 検索結果数表示
-            if (dataTable.Rows == null)
+            if (datatableDrugs.Rows == null)
             {
-                lblHits.Text = dataTable.Rows.Count + "0件";
+                lblHits.Text = datatableDrugs.Rows.Count + "0件";
             }
             else
             {
-                lblHits.Text = dataTable.Rows.Count.ToString() + "件";
+                lblHits.Text = datatableDrugs.Rows.Count.ToString() + "件";
             }
 
         }
